@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,700">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+
+{% block title %}Add Movie{% endblock %}
+
+{% block content %}
+<div class="content">
+    {% if movie_list:%}
+        <div class="container">
+    <h1 class="heading">MOVIE LIST</h1>
+    {% for movie in movie_list: %}
+<p>     <a href="/">{{movie.title}} - ({{movie.release_date.split('-')[0]}}) </a> </p>
+        <br/>
+    {% endfor %}
+    </div>
+    {% else: %}
+    <h1 class="heading">Add a Movie</h1>
+     <form method="POST" action="{{url_for('add_page')}}" novalidate>
+    {{ form.csrf_token }}
+     <p>{{ form.title.label }} <br/>{{ form.title(size=20) }}
+      {% for err in form.title.errors: %}
+       <span>{{err}}</span>
+      {% endfor %}
+       </p>
+
+      {{form.submit}}
+</form>
+    {%endif%}
+</div>
+{% endblock %}
