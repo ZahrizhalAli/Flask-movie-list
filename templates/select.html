@@ -13,9 +13,19 @@
 {% block content %}
 <div class="container">
     <h1 class="heading">Select Movie</h1>
-  <p>
-    <a href="#"> MOVIE TITLE - MOVIE RELEASE DATE</a>
-  </p>
+  {% if movie_list:%}
+        <div class="container">
+    <h1 class="heading">MOVIE LIST</h1>
+    {% for movie in movie_list: %}
+<p>     <a href={{url_for('add_movie', title={{movie.title}}, year={{movie.release_date.split('-')[0]}},
+overview={{movie.overview}}, img_url={{movie.backdrop_path}})}}>{{movie.title}} - ({{movie.release_date.split('-')[0]}}) </a> </p>
+
+
+        <br/>
+
+                </form>
+    {% endfor %}
+    </div>
 
 </div>
 {% endblock %}

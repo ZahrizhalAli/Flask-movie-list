@@ -6,3 +6,5 @@ from wtforms.validators import DataRequired
 class AddForm(FlaskForm):
     title = StringField('Movie Title', validators=[DataRequired()])
     submit = SubmitField("Add Movie")
+
+
