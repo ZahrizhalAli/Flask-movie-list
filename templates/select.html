@@ -17,8 +17,8 @@
         <div class="container">
     <h1 class="heading">MOVIE LIST</h1>
     {% for movie in movie_list: %}
-<p>     <a href={{url_for('add_movie', title={{movie.title}}, year={{movie.release_date.split('-')[0]}},
-overview={{movie.overview}}, img_url={{movie.backdrop_path}})}}>{{movie.title}} - ({{movie.release_date.split('-')[0]}}) </a> </p>
+<p>     <a href={{url_for('add_movie', id=movie.id, title=movie.title, year=movie.release_date,
+           img_url=movie.backdrop_path, overview=movie.overview)}}>{{movie.title}}</a> </p>
 
 
         <br/>
@@ -26,6 +26,7 @@ overview={{movie.overview}}, img_url={{movie.backdrop_path}})}}>{{movie.title}} 
                 </form>
     {% endfor %}
     </div>
+    {% endif %}
 
 </div>
 {% endblock %}

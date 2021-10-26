@@ -35,19 +35,21 @@ def home():
     return render_template("index.html", movies=all_movies)
 
 
-@app.route('/add-movie', methods=['POST'])
+@app.route('/add-movie')
 def add_movie():
-    title = request.args.title
-    year = request.args.year
-    description = request.args.overview
-    img_url = request.args.img_url
-    new_movie = Movie(title=title, year=year,
-                        description=description,
-                        rating=0.0, ranking=0, review="Not reviewed yet.",
-                        img_url=f"https://image.tmdb.org/t/p/w500/{img_url}")
-    db.session.add(new_movie)
-    db.session.commit()
-    return redirect('/')
+    movie_api_id = request.args.get("id")
+    if movie_api_id:
+
+        new_movie = Movie(
+            title=request.args.get('title'),
+            # The data in release_date includes month and day, we will want to get rid of.
+            year=request.args.get('year').split('-')[0], rating=0, ranking=0, review="Not reviewed yet",
+            img_url=f"https://image.tmdb.org/t/p/w500/{request.args.get('img_url')}",
+            description=request.args.get('overview')
+        )
+        db.session.add(new_movie)
+        db.session.commit()
+        return redirect(f"/edit?id={movie_api_id}")
 
 
 @app.route('/add', methods=['POST', 'GET'])
@@ -62,7 +64,6 @@ def add_page():
 
         }
         movie_data = requests.get(url="https://api.themoviedb.org/3/search/movie", params=params)
-        print(movie_data.json()['results'])
         return render_template('select.html', movie_list=movie_data.json()['results'])
     return render_template('add.html', form=add_form)
 
@@ -87,7 +88,7 @@ def edit():
         movie_to_update.review = edit_form.review.data
         db.session.commit()
         return redirect('/')
-    return render_template('edit.html', movie=get_movie, form=edit_form)
+    return render_template('edit.html', movie=get_movie, form=edit_form, movie_id=movie_id)
 
 
 if __name__ == '__main__':
